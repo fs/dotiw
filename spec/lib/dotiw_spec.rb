@@ -36,8 +36,8 @@ describe "A better distance_of_time_in_words" do
         distance_of_time(2.5.hours + 30.seconds, except: 'seconds').should eq("2 hours and 30 minutes")
       end
 
-      it "except:seconds har higher presedence than include_seconds:true" do
-        distance_of_time(1.2.minute, include_seconds: true, except: 'seconds').should eq('1 minute')
+      it "except:seconds har higher presedence than :include_seconds => true" do
+        distance_of_time(1.2.minute, :include_seconds => true, except: 'seconds').should eq('1 minute')
       end
     end
 
@@ -93,7 +93,7 @@ describe "A better distance_of_time_in_words" do
 
   describe "real version" do
     it "debe hablar español" do
-      distance_of_time_in_words(Time.now, Time.now + 5.days, true, :locale => "es").should eql("5 días")
+      distance_of_time_in_words(Time.now, Time.now + 5.days, :include_seconds => true, :locale => "es").should eql("5 días")
     end
 
     [
@@ -116,7 +116,7 @@ describe "A better distance_of_time_in_words" do
       ["2008-2-01".to_time, "2008-3-01".to_time, "1 month"]
     ].each do |start, finish, output|
       it "should be #{output}" do
-        distance_of_time_in_words(start, finish, true).should eql(output)
+        distance_of_time_in_words(start, finish, :include_seconds => true).should eql(output)
       end
     end
 
@@ -148,7 +148,7 @@ describe "A better distance_of_time_in_words" do
          "1 year, 1 month, 22 days, 16 hours, and 10 seconds"]
       ].each do |start, finish, accumulator, output|
         it "should be #{output}" do
-          distance_of_time_in_words(start, finish, true, :accumulate_on => accumulator).should eql(output)
+          distance_of_time_in_words(start, finish, :include_seconds => true, :accumulate_on => accumulator).should eql(output)
         end
       end
     end # :accumulate_on
@@ -226,19 +226,19 @@ describe "A better distance_of_time_in_words" do
        "2 year, 3 month, 4 day, 5 hour, 6 minute, and 7 second"]
     ].each do |start, finish, options, output|
       it "should be #{output}" do
-        distance_of_time_in_words(start, finish, true, options).should eql(output)
+        distance_of_time_in_words(start, finish, options.merge(:include_seconds => true)).should eql(output)
       end
     end
 
     describe "include_seconds" do
       it "is ignored if only seconds have passed" do
-        distance_of_time_in_words(Time.now, Time.now + 1.second, false).should eql("1 second")
+        distance_of_time_in_words(Time.now, Time.now + 1.second, :include_seconds => false).should eql("1 second")
       end
 
       it "removes seconds in all other cases" do
         distance_of_time_in_words(Time.now,
                                   Time.now + 1.year + 2.months + 3.days + 4.hours + 5.minutes + 6.seconds,
-                                  false).should eql("1 year, 2 months, 3 days, 4 hours, and 5 minutes")
+                                  :include_seconds => false).should eql("1 year, 2 months, 3 days, 4 hours, and 5 minutes")
       end
     end # include_seconds
   end
