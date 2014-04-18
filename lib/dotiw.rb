@@ -22,9 +22,8 @@ module ActionView
         display_time_in_words DOTIW::TimeHash.new(seconds).to_hash, options
       end
 
-      def distance_of_time_in_words(from_time, to_time, include_seconds = false, options = {})
-        options[:include_seconds] = include_seconds
-        return old_distance_of_time_in_words(from_time, to_time, include_seconds, options) if options.delete(:vague)
+      def distance_of_time_in_words(from_time, to_time, options = {})
+        return old_distance_of_time_in_words(from_time, to_time, options) if options.delete(:vague)
         hash = distance_of_time_in_words_hash(from_time, to_time, options)
         display_time_in_words(hash, options)
       end
@@ -38,8 +37,8 @@ module ActionView
 
       alias_method :old_time_ago_in_words, :time_ago_in_words
 
-      def time_ago_in_words(from_time, include_seconds = false, options = {})
-        distance_of_time_in_words(from_time, Time.now, include_seconds, options)
+      def time_ago_in_words(from_time, options = {})
+        distance_of_time_in_words(from_time, Time.now, options)
       end
 
 
